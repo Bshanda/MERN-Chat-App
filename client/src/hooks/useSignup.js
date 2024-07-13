@@ -22,7 +22,12 @@ const useSignup = () => {
 
     setLoading(true)
 
-    let userData = { fullname, username, password, gender }
+    let userData = {
+      fullname,
+      username: username?.toLowerCase(),
+      password,
+      gender
+    }
 
     try {
       const res = await fetch(`${Paths.Auth.Signup}`, {
@@ -31,7 +36,7 @@ const useSignup = () => {
         body: JSON.stringify(userData)
       })
       let resData = await res.json()
-      console.log(resData)
+      // console.log(resData)
 
       // Error handling
       if (resData.error) {
@@ -67,12 +72,12 @@ const handleInputErrors = ({
   gender
 }) => {
   if (!fullname || !username || !password || !gender) {
-    console.log('Please fill all the inputs')
+    toast.error('Please fill all the inputs')
     return false
   }
 
   if (password.length <= 6) {
-    console.log('Password must be more than 6 characters')
+    toast.error('Password must be more than 6 characters')
     return false
   }
 
@@ -88,10 +93,12 @@ const handleInputErrors = ({
 
   const pattern = /^(?=.*[a-b])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])$/
 
- if (!pattern.test(password)) {
-  console.log("password must include atleast one lowerCase letter, one digit, one special charactor");
-  return false
- } 
+  if (!pattern.test(password)) {
+    toast.error(
+      'password must include atleast one lowerCase letter, one digit, one special charactor'
+    )
+    return false
+  }
 
   //   if (password !== confirmPassword) {
   //     console.log('Password donot match')

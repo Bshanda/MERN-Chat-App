@@ -45,7 +45,7 @@ const useGetMessages = () => {
         return
       }
 
-      console.log('Fetched chats :-', decodedMessages.data)
+      // console.log('Fetched chats :-', decodedMessages.data)
       // save to message slice in redux.
       dispatch(setMessages(decodedMessages.data))
       return

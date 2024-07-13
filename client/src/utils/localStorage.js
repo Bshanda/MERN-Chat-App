@@ -1,7 +1,9 @@
+import toast from "react-hot-toast"
+
 export const saveToLocalStorage = ({ key, value }) => {
   // check for unvalid keys
   if (typeof key != 'string') {
-    console.log(
+    toast.error(
       'Save to local storage failed. Reason :- key is not a string:-',
       key
     )
@@ -22,14 +24,14 @@ export const saveToLocalStorage = ({ key, value }) => {
     // console.log('Key was auth',key);
     localStorage.setItem(key, value)
   } catch (error) {
-    console.log('Error in setting Local storage',error)
+    toast.error('Error in setting Local storage',error)
   }
 }
 
 export const getFromLocalStorage = key => {
   // check for unvalid keys
   if (typeof key != 'string') {
-    console.log('Get from local storage failed. Reason :- key is not a string')
+    toast.error('Get from local storage failed. Reason :- key is not a string')
     return
   }
   try {
@@ -38,19 +40,19 @@ export const getFromLocalStorage = key => {
     // Return value without parsing if key is not "auth"
     return localStorage.getItem(key)
   } catch (error) {
-    console.log('Error in getting value from local storage')
+    toast.error('Error in getting value from local storage')
   }
 }
 
 export const removeFromLocalStorage = key => {
   // check for unvalid keys
   if (typeof key != 'string') {
-    console.log('Get from local storage failed. Reason :- key is not a string')
+    toast.error('Get from local storage failed. Reason :- key is not a string')
     return
   }
   try {
     localStorage.removeItem(key)
   } catch (error) {
-    console.log('Error in removing key:-', error)
+    toast.error('Error in removing key:-', error)
   }
 }

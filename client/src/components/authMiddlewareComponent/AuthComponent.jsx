@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 const AuthComponent = ({ children }) => {
   const authUser = useSelector(state=>state.authUser.value) || {}
   useEffect(() => {
-    console.log('Auth component called')
+    // console.log('Auth component called')
   }, [authUser])
   return <>{authUser?._id ? children : <Navigate to={'/login'}></Navigate>}</>
 }

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Paths from '../constants/Paths.js'
 import { addToken, addUser } from '../features/authUser/authUserSlice.js'
+import toast from 'react-hot-toast'
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false)
@@ -49,7 +50,7 @@ export default useLogin
 
 const handleLoginErrors = ({ username, password }) => {
   if (!username || !password) {
-    console.log('Fill all the inputs')
+    toast.error('Fill all the inputs')
     return false
   }
   return true

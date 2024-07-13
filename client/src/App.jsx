@@ -2,6 +2,7 @@
 import Login from './Pages/Login.page.jsx'
 import SignUp from './Pages/Signup.page.jsx'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 
 import AuthComponent from './components/authMiddlewareComponent/AuthComponent.jsx'
 
@@ -26,6 +27,7 @@ function App () {
         <Route path='/login' element={<Login></Login>} />
         <Route path='/signup' element={<SignUp></SignUp>} />
       </Routes>
+      <Toaster />
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { removeSelectedChat } from "../../features/authUser/selectedChatSlice"
 const Header = ({ selectedChat }) => {
     const dispatch = useDispatch()
     const handleCloseChat = ()=>{
-        console.log('Chat closed');
+        // console.log('Chat closed');
         dispatch(removeSelectedChat())
     }
   return (

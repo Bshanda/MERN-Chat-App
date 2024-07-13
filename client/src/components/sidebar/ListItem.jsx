@@ -2,10 +2,8 @@ import Avatar from './Avatar'
 import UserName from './UserName'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  removeSelectedChat,
   setSelectedChat
-} from '../../features/authUser/selectedChatSlice'
-import { useEffect, useState } from 'react'
+} from '../../features/authUser/selectedChatSlice' 
 import { useSocketContext } from '../../context/SocketContext'
 
 const ListItem = ({ user }) => {
