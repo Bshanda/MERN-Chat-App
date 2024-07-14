@@ -38,17 +38,23 @@ export const sendMessage = async (req, res) => {
     await Promise.all([chat.save(), newMessage.save()])
 
     // socket io functionality for live chatting.
+
     const receiverSocketId = getRecieverSocketId(recieverId)
 
-    // only emits if reciever is online.
+    // only emits if reciever is online and after the message is saved.
     if (receiverSocketId) {
-      // io.to(<socket_id>).emit() used to send events to specific client
-      if(newMessage != '')io.to(receiverSocketId).emit('newMessage', newMessage)
+      //  io.to(<socket_id>).emit() //used to send events to specific client
+      // emits only if msg in not nothing
+      if (newMessage != '')
+        io.to(receiverSocketId).emit('newMessage', newMessage)
     }
 
     return res.status(HttpStatusCodes.OK).json({ data: newMessage }).end()
   } catch (error) {
-    console.log('Error: Internal server error in send message controller',error)
+    console.log(
+      'Error: Internal server error in send message controller',
+      error
+    )
     return res
       .status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error })

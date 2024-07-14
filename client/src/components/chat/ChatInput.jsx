@@ -3,21 +3,24 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import useSendMessage from '../../hooks/useSendMessage'
 import { useSocketContext } from '../../context/SocketContext'
+import toast from 'react-hot-toast'
 
 const ChatInput = () => {
   const [text, setText] = useState('')
   const { sendMessage } = useSendMessage()
-  const {socket } = useSocketContext()
+  const { socket } = useSocketContext()
+  const authUser = useSelector(state => state.authUser.value)
+  const selectedChat = useSelector(state => state.selectedChat.value)
 
   const handleTextSubmit = e => {
     e.preventDefault()
     if (text == '') {
-      console.log('Please write something')
+      toast.error('Please write something')
       return
     }
 
     sendMessage(text)
-    socket.emit('message', text)
+    socket.emit('newMessage', { text, senderId: authUser?._id, recieverId:selectedChat?._id })
 
     setText('')
   }

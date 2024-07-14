@@ -3,12 +3,8 @@ import http from 'http'
 import express from 'express'
 import EnvVars from '../constants/EnvVars.js'
 
-
-
 const app = express()
 const server = http.createServer(app)
-
-
 
 const io = new Server(server, {
   cors: {
@@ -32,7 +28,6 @@ io.on('connection', socket => {
   }
 
   io.emit('getOnlineUsers', Object.keys(userSocketMap))
- 
 
   // socket.on() is used to listen to the events. can be used both on client and server side
   socket.on('disconnect', () => {

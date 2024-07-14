@@ -5,7 +5,7 @@ import SearchInput from './SearchInput'
 
 const Sidebar = () => {
   return (
-    <div className='flex flex-col justify-between border-r border-slate-500 p-4 abc '>
+    <div className='flex flex-col border-r border-slate-500 p-4 abc '>
         <SearchContainer />
         <div className='divider px-3'></div>
         <ChatList />

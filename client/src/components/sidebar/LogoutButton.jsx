@@ -16,7 +16,7 @@ const LogoutButton = () => {
   }
 
   return (
-      <div className='' onClick={logout}>
+      <div className='mt-auto' onClick={logout}>
       <BiLogOut className='w-6 h-6 cursor-pointer' />
     </div>
   )

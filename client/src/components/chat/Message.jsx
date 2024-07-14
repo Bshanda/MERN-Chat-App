@@ -3,16 +3,16 @@ import { useSelector } from 'react-redux'
 import { extractTime } from '../../utils/extractTime'
 
 const Message = ({ chat }) => {
-  const authUser = useSelector(state => state.authUser.value)
-  const selectedChat = useSelector(state => state.selectedChat.value)
+  const authUser = useSelector(state => state.authUser?.value)
+  const selectedChat = useSelector(state => state.selectedChat?.value)
   const bottomRef = useRef()
-  const fromMe = chat.senderId === authUser._id
-  const formattedTime = extractTime(chat.createdAt)
+  const fromMe = chat?.senderId === authUser?._id
+  const formattedTime = extractTime(chat?.createdAt)
   const chatClassName = fromMe ? 'chat-end' : 'chat-start'
-  const profilePic = fromMe ? authUser.profilePic : selectedChat?.profilePic
+  const profilePic = fromMe ? authUser?.profilePic : selectedChat?.profilePic
   const bubbleBgColor = fromMe ? 'bg-blue-500' : ''
 
-  const shakeClass = chat.shouldShake ? 'shake' : ''
+  const shakeClass = chat?.shouldShake ? 'shake' : ''
   const [revealMsgTiming, setRevealMsgTiming] = useState(false)
 
   const revealMsgTime = () => {

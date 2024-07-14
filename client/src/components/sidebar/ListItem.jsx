@@ -1,9 +1,7 @@
 import Avatar from './Avatar'
 import UserName from './UserName'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  setSelectedChat
-} from '../../features/authUser/selectedChatSlice' 
+import { setSelectedChat } from '../../features/authUser/selectedChatSlice'
 import { useSocketContext } from '../../context/SocketContext'
 
 const ListItem = ({ user }) => {
@@ -27,9 +25,14 @@ const ListItem = ({ user }) => {
         onClick={handleChatClick}
       >
         {/* // Profile pic */}
-        <div>
-          <div className={`w-12 rounded-full relative`}>
-            <img src={user.profilePic} alt='user avatar' />
+        <div className=''>
+          <div
+            className={`flex justify-center items-center w-12 h-12 ${
+              isSelected ? 'bg-sky-500' : 'bg-sky-400'
+            } text-center m-auto text-white text-lg font-bold rounded-full relative`}
+          >
+            {/* <img src={user.profilePic} alt='user avatar' /> */}
+            <p>{user?.fullname[0]}</p>
             {isOnline ? <span className='online'></span> : null}
           </div>
         </div>

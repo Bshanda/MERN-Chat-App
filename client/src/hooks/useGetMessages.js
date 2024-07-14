@@ -38,6 +38,7 @@ const useGetMessages = () => {
 
       // converting readable stream to a json object.
       const decodedMessages = await r.json()
+      console.log("get msg:-",decodedMessages.data);
 
       // return in no prior conversation.
       if (decodedMessages?.length == 0) {

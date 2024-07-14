@@ -7,7 +7,7 @@ import MessageSkeleton from '../skeleton/MessagesSkeleton'
 
 const Messages = () => {
   const selectedChat = useSelector(state => state.selectedChat.value)
-  const messages = useSelector(state => state.messages?.value)
+  const messages = useSelector(state => state.messages.value)
   const { getMessages, loading } = useGetMessages()
   // hook for SocketIo live message emitting and recieving
   useListenMessages()
@@ -29,25 +29,23 @@ const Messages = () => {
 
   return (
     <div className='mt-3'>
-      <>
-        {/* Show skeleton if loading */}
-        {loading && <MessageSkeleton />}
+      {/* Show skeleton if loading */}
+      {loading && <MessageSkeleton />}
 
-        {/* Show messages if prior conversAtion present */}
+      {/* Show messages if prior conversAtion present */}
 
-        {!loading &&
-          messages.length > 0 &&
-          messages?.map((message) => (
-            <div key={message._id}>
-              <Message chat={message}></Message>
-            </div>
-          ))}
+      {!loading &&
+        messages.length > 0 &&
+        messages?.map(message => (
+          <div key={message?._id}>
+            <Message chat={message}></Message>
+          </div>
+        ))}
 
-        {/* If no prior conversation */}
-        {!loading && messages.length === 0 && (
-          <p className='text-center'>Send a message</p>
-        )}
-      </>
+      {/* If no prior conversation */}
+      {!loading && messages.length === 0 && (
+        <p className='text-center'>Send a message</p>
+      )}
     </div>
   )
 }
