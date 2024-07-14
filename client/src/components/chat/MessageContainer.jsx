@@ -19,7 +19,7 @@ const MessageContainer = () => {
     <div
       className={`  abc flex flex-col ${
         messages ? 'justify-between' : 'justify-around'
-      }  p-4`}
+      }  p-4 w-[500px]`}
     >
       {!selectedChat ? (
         <>
@@ -32,7 +32,7 @@ const MessageContainer = () => {
         <>
 
           <Header selectedChat={selectedChat}></Header>
-          <div className='overflow-auto'>
+          <div className='overflow-auto mt-auto'>
             <Messages></Messages>
           </div>
           <ChatInput />

@@ -12,11 +12,11 @@ const LogoutButton = () => {
     dispatch(removeToken())
 
     navigate('login')
-    console.log('logout called')
+    // console.log('logout called')
   }
 
   return (
-    <div className='mt-auto absolute bottom-0 bg-white' onClick={logout}>
+      <div className='' onClick={logout}>
       <BiLogOut className='w-6 h-6 cursor-pointer' />
     </div>
   )

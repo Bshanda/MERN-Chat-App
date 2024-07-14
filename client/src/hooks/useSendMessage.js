@@ -17,7 +17,7 @@ const useSendMessage = () => {
     const chatApi = Paths.Message.Send
     const sendMessageApi = chatApi + recieverId
 
-    console.log('Reciever Id:-', sendMessageApi)
+    // console.log('Reciever Id:-', sendMessageApi)
 
     try {
       const r = await fetch(sendMessageApi, {
@@ -33,10 +33,9 @@ const useSendMessage = () => {
 
       if (res?.error) {
         throw new Error(res.error)
-        console.log('Error in useSendMessage:-', res.error)
       }
 
-      console.log('Server response for send message', res.data)
+      // console.log('Server response for send message', res.data)
       // add new message to existing messages.
       dispatch(addNewMessage(res.data))
     } catch (e) {

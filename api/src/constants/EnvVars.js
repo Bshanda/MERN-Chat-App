@@ -9,12 +9,13 @@ const EnvVars = {
     Exp: process.env.JWT_EXP ?? ''
   },
   Mongodb: {
-    uri: `${process.env.MONGOD_URI}` ?? '',
+    uri: process.env.MONGOD_URI ?? '',
     DbName: process.env.DB_NAME ?? '',
     DbUser: process.env.DB_USER ?? '',
     DbPass: process.env.DB_PASS ?? ''
   },
-  MySalt: process.env.MY_SECRET_SALT ?? ''
+  MySalt: process.env.MY_SECRET_SALT ?? '',
+  SockerServerOrigin: process.env.SOCKET_SERVER_ORIGIN ?? ''
 }
 
 export default EnvVars

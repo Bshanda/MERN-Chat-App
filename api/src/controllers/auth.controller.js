@@ -12,27 +12,19 @@ const signUp = async (req, res) => {
     const { data, status } = await singupService(newuser)
     // console.log('signup controller called after saved user', savedNewUser)s
 
-    // console.log(savedNewUser)
     // return error if user not created
-
-    console.log('====================================')
-    console.log(status)
-    console.log('====================================')
 
     if (status !== true) {
       console.log('Error for not status')
       return res.status(HttpStatusCodes.CONFLICT).json({ error: data })
     }
 
-    // Returns new user if created.
-    console.log('====================================')
-    console.log('New user created')
-    console.log('====================================')
-    return res.status(HttpStatusCodes.CREATED).json({ data, status })
+    // creates a token if user credentials are correct.
+    const Token = createToken(data)
+
+    return res.status(HttpStatusCodes.CREATED).json({ data, status, Token })
   } catch (error) {
-    console.log('====================================')
     console.log('Error in controller try catch')
-    console.log('====================================')
     return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ Error })
   }
 }

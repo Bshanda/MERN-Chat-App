@@ -32,9 +32,16 @@ const SearchInput = () => {
     }, 100)
   }
 
+  const handleSearchedItemClick = chat => {
+    dispatch(setSelectedChat(chat))
+    setFilteredChats([])
+    setSearch('')
+    setIsSearching(false)
+  }
+
   return (
-    <div className='gap-2 my-4 relative' autoComplete='off'>
-      <div className='flex items-center gap-2 my-4'>
+    <div className='' autoComplete='off'>
+      <div className='flex items-center'>
         <input
           name='search'
           placeholder='Search'
@@ -63,9 +70,7 @@ const SearchInput = () => {
               <li
                 className='hover:bg-sky-500 rounded-md'
                 onClick={() => {
-                  dispatch(setSelectedChat(chat))
-                  setFilteredChats([])
-                  setSearch('')
+                  handleSearchedItemClick(chat)
                 }}
                 key={chat._id}
               >

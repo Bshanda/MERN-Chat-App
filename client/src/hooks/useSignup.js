@@ -2,7 +2,7 @@ import { useState } from 'react'
 // import { useAuthContext } from '../context/AuthContext'
 import Paths from '../constants/Paths.js'
 import { useDispatch } from 'react-redux'
-import { addUser } from '../features/authUser/authUserSlice.js'
+import { addToken, addUser } from '../features/authUser/authUserSlice.js'
 import toast from 'react-hot-toast'
 
 const useSignup = () => {
@@ -45,7 +45,9 @@ const useSignup = () => {
 
       // If user created succesfully
       // using dispatch for react redux
-      dispatch(addUser(resData))
+      dispatch(addUser(resData?.data))
+      dispatch(addToken(resData?.Token))
+
 
       // console.log(resData)
 
@@ -91,14 +93,14 @@ const handleInputErrors = ({
   // You can adjust the special characters inside the square brackets to include or exclude s
   // pecific characters as needed.
 
-  const pattern = /^(?=.*[a-b])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])$/
+  // const pattern = /^(?=.*[a-b])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])$/
 
-  if (!pattern.test(password)) {
-    toast.error(
-      'password must include atleast one lowerCase letter, one digit, one special charactor'
-    )
-    return false
-  }
+  // if (!pattern.test(password)) {
+  //   toast.error(
+  //     'password must include atleast one lowerCase letter, one digit, one special charactor'
+  //   )
+  //   return false
+  // }
 
   //   if (password !== confirmPassword) {
   //     console.log('Password donot match')

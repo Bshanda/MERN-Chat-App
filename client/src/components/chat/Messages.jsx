@@ -28,7 +28,7 @@ const Messages = () => {
   useEffect(() => {}, [messages])
 
   return (
-    <div>
+    <div className='mt-3'>
       <>
         {/* Show skeleton if loading */}
         {loading && <MessageSkeleton />}

@@ -43,8 +43,8 @@ const Message = ({ chat }) => {
         authUser?._id == chat?.senderId ? 'justify-end' : 'justify-start'
       } text-xs  `}
       ref={bottomRef}
-      onMouseOver={revealMsgTime}
-      onMouseLeave={hideMsgTime}
+      // onMouseOver={revealMsgTime}
+      // onMouseLeave={hideMsgTime}
     >
       <div>
         <div

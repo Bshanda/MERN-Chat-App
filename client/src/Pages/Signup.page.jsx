@@ -12,9 +12,9 @@ const SignUp = () => {
     password: ''
   })
   const authUser = useSelector(state => state.authUser.value)
-  
 
   const { loading, signup } = useSignup()
+  const navigate = useNavigate()
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -22,7 +22,6 @@ const SignUp = () => {
   }
 
   useEffect(() => {
-    // console.log(user)
     // redirect to chat page if user authenticated.
     if (authUser) {
       navigate('/')

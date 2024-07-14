@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link, Navigate, redirect, useNavigate } from 'react-router-dom'
 import useLogin from '../hooks/useLogin'
 import { useSelector } from 'react-redux'
-import { useSocketContext } from '../context/SocketContext'
 
 const Login = () => {
   const [loginUser, setLoginUser] = useState({
@@ -14,17 +13,12 @@ const Login = () => {
   const { loading, login } = useLogin()
   const navigate = useNavigate()
 
-  const { socket } = useSocketContext()
-
-  // const authUser = useSelector(state => state.authUser)
-
   const handleSubmit = async e => {
     e.preventDefault()
     await login(loginUser)
   }
 
   useEffect(() => {
-    // console.log(user)
     // redirect to chat page if user authenticated.
 
     if (authUser) {

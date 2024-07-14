@@ -20,7 +20,7 @@ const ChatList = () => {
   useEffect(()=>{},[chatList])
 
   return (
-    <div className={`max-w-full rounded `}>
+    <div className={`max-w-screen-sm rounded-lg bg-base-200 overflow-auto`}>
       {chatList?.map((chat, i) => (
         <ListItem key={chat._id} user={chat} />
       ))}

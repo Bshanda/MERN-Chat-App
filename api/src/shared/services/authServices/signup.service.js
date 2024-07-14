@@ -1,8 +1,5 @@
 import User from '../../../db/models/auth.models.js'
-import { generateHash, verifyPassword } from '../../utils/passwordUtils.js'
-import EnvVars from '../../../constants/EnvVars.js'
-import { createToken } from '../../utils/createToken.js'
-import HttpStatusCodes from '../../../constants/HttpStatusCodes.js'
+import { generateHash } from '../../utils/passwordUtils.js'
 
 export const singupService = async newuser => {
   let { fullname, username, password, gender } = newuser

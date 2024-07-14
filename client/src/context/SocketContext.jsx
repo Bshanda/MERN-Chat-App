@@ -14,9 +14,8 @@ export const SocketContextProvider = ({ children }) => {
   const authUser = useSelector(state => state.authUser.value)
 
   useEffect(() => {
-     
     if (authUser?._id) {
-      console.log('Socket connected');
+      console.log('Socket connected')
       const socket = io('http://localhost:4080', {
         query: {
           userId: authUser?._id
@@ -25,6 +24,7 @@ export const SocketContextProvider = ({ children }) => {
 
       setSocket(socket)
 
+      // socket.on(<event>:string, callback:any) can be used on both server and client.
       socket.on('getOnlineUsers', users => {
         setOnlineUsers(users)
       })
