@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Paths from '../constants/Paths'
 import { useDispatch } from 'react-redux'
-import { addToChatList, filterChats } from '../features/authUser/chatListSlice'
+import { addToChatList } from '../features/authUser/chatListSlice'
 
 const useChatListFetch = () => {
   const [loading, setLoading] = useState(false)
@@ -27,8 +27,7 @@ const useChatListFetch = () => {
         if (chatListDecode.error) {
           throw new Error(chatListDecode.error)
         }
-        dispatch(addToChatList(chatListDecode))
-        dispatch(filterChats(chatListDecode))
+        dispatch(addToChatList(chatListDecode)) 
         // console.log(chatListDecode)
       })
       .catch(e => {

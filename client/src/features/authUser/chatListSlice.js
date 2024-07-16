@@ -1,9 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: [],
-  filteredChats: [],
-  isFilteringChats: false
+  value: [], 
 }
 
 const chatListSlice = createSlice({
@@ -12,16 +10,10 @@ const chatListSlice = createSlice({
   reducers: {
     addToChatList: (state, action) => {
       state.value = action.payload
-    },
-    filterChats: (state, action) => {
-      state.filteredChats = action.payload
-    },
-    isSearching: (state, action) => {
-      state.isFilteringChats = action.payload
-    }
+    } 
   }
 })
 
-export const { addToChatList, isSearching, filterChats } = chatListSlice.actions
+export const { addToChatList } = chatListSlice.actions
 
 export default chatListSlice.reducer

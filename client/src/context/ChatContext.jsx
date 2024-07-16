@@ -8,7 +8,7 @@ export const useChatContext = () => {
 }
 
 export const ChatContextProvider = ({ children }) => {
-  const chats = useSelector(state => state.chatList.filteredChats)
+  const chats = useSelector(state => state.chatList.value)
   const [filteredChats, setFilteredChats] = useState(chats)
 
   const filterChats = search => {
