@@ -1,5 +1,3 @@
-import Avatar from './Avatar'
-import UserName from './UserName'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSelectedChat } from '../../features/authUser/selectedChatSlice'
 import { useSocketContext } from '../../context/SocketContext'
@@ -12,7 +10,7 @@ const ListItem = ({ user }) => {
 
   const dispatch = useDispatch()
 
-  const handleChatClick = async () => {
+  const handleChatClick = () => {
     dispatch(setSelectedChat(user))
   }
 

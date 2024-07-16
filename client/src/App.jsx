@@ -1,14 +1,14 @@
 // import Home from './Pages/Home.jsx'
 import Login from './Pages/Login.page.jsx'
 import SignUp from './Pages/Signup.page.jsx'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
 import AuthComponent from './components/authMiddlewareComponent/AuthComponent.jsx'
 
 import Home from './Pages/Home.page.jsx'
-import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+// import { useEffect } from 'react'
+// import { useSelector } from 'react-redux'
 
 function App () {
   // const authUser = useSelector(state => state.authUser.value)
