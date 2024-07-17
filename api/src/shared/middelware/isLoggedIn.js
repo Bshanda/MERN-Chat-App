@@ -43,6 +43,7 @@ const isLoggedIn = async (req, res, next) => {
 
     next()
   } catch (error) {
+    console.log('Error in auth middelware',error);
     return res
       .status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error })

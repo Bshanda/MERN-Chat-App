@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Paths from '../constants/Paths'
 import { useDispatch, useSelector } from 'react-redux'
-import { addNewMessage, setMessages } from '../features/authUser/messagesSlice'
+import { addOneMessage, setHasMore, setMessages } from '../features/authUser/messagesSlice'
 
 const useSendMessage = () => {
   const [loading, setLoading] = useState(false)
@@ -37,7 +37,8 @@ const useSendMessage = () => {
 
       // console.log('Server response for send message', res.data)
       // add new message to existing messages.
-      dispatch(addNewMessage(res.data))
+      dispatch(addOneMessage(res.data))
+      dispatch(setHasMore(true))
     } catch (e) {
       console.log(e)
     } finally {

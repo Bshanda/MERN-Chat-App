@@ -10,10 +10,10 @@ export default {
   Message: {
     Base: '/message',
     Send: '/send/:Id',
-    GetChat: '/:Id'
+    GetChat: '/:Id/:skip'
   },
   Users: {
-    Base: '/users',
+    Base: '/users/',
     Users: '/'
   }
 }

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useSocketContext } from '../context/SocketContext'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { addNewMessage } from '../features/authUser/messagesSlice'
+import { addOneMessage, setMessages } from '../features/authUser/messagesSlice'
 import toast from 'react-hot-toast'
 
 const useListenMessages = () => {
@@ -14,7 +14,7 @@ const useListenMessages = () => {
   useEffect(() => {
     // socket.on() is used to listen to the events. can be used both on client and server side
     socket?.on('newMessage', ( message) => {
-      dispatch(addNewMessage(message))
+      dispatch(addOneMessage(message))
     })
 
     return () => {

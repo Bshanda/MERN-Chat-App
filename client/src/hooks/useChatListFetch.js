@@ -27,6 +27,7 @@ const useChatListFetch = () => {
         if (chatListDecode.error) {
           throw new Error(chatListDecode.error)
         }
+
         dispatch(addToChatList(chatListDecode)) 
         // console.log(chatListDecode)
       })

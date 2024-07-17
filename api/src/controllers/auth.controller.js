@@ -35,25 +35,26 @@ const login = async (req, res) => {
 
   try {
     // returns msg (msg will contain user object after verifying credentials) and status code.
-    const { data, status, msg } = await loginService({ username, password })
+    // const { data, status, msg } = await loginService({ username, password })
+    const user = await loginService({ username, password })
 
     // Sends error on wrong password or non exsiting user.
-    if (status !== HttpStatusCodes.OK) {
+    if (user?.error) {
       // console.log(data)
-      return res.status(status).json({ data, status }).end()
+      return res.status(user.status).json({ error: user?.error }).end()
     }
 
     // console.log('User :-', user)
 
     // creates a token if user credentials are correct.
-    const Token = createToken(data)
+    const Token = createToken(user?.data)
 
     res.cookie('jwt', Token, {
       maxAge: EnvVars.Jwt.Exp,
       httpOnly: true,
       secure: false
     })
-    return res.status(HttpStatusCodes.OK).json({ data, status, Token })
+    return res.status(HttpStatusCodes.OK).json({ data: user?.data, Token })
   } catch (error) {
     console.log('Error in login controller', error)
     return res.status(HttpStatusCodes.BAD_REQUEST).json({ error }).end()

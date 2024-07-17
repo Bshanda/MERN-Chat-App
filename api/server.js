@@ -18,6 +18,12 @@ const __dirname = path.resolve()
 
 app.use(cors()) // Enable CORS for all routes
 
+// Logging middleware
+// app.use((req, res, next) => {
+//   console.log(`${req.method} ${req.url} - ${new Date().toISOString()}`)
+//   next() // Call the next middleware or route handler
+// })
+
 app.use(express.json()) // for parsing the json objects
 app.use(cookieParser()) // Parsing the cookies
 app.use(Paths.Base, apiRouter) // using the router

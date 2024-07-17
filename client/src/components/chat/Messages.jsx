@@ -1,51 +1,108 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Message from './Message'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useGetMessages from '../../hooks/useGetMessages'
 import useListenMessages from '../../hooks/useListenMessages'
 import MessageSkeleton from '../skeleton/MessagesSkeleton'
+import { setScrollToBottom } from '../../features/authUser/messagesSlice'
 
 const Messages = () => {
-  const selectedChat = useSelector(state => state.selectedChat.value)
-  const messages = useSelector(state => state.messages.value)
+  // for infinite scroll
+  const [skip, setSkip] = useState(0)
+  const scrollToBottom = useSelector(state => state.messages?.scrollToBottom)
+  const [showNoMoreMessage, setShowMoreMessages] = useState(true)
+
+  // fecthing selected user and messages from redux
+  const selectedChat = useSelector(state => state.selectedChat?.value)
+  let messages = useSelector(state => state.messages?.value)
+  const hasMore = useSelector(state => state.messages?.hasMore)
+
+  // for fetching messages from server.
   const { getMessages, loading } = useGetMessages()
+
   // hook for SocketIo live message emitting and recieving
   useListenMessages()
 
+  // redux state change
+  const dispatch = useDispatch()
+
+  // Will fetch messages when user selects another chat or reched the end of fetched messages
   useEffect(() => {
+    setShowMoreMessages(false)
     const controller = new AbortController()
 
     // console.log('Messages fetch req');
-    getMessages(controller.signal)
+    getMessages({ signal: controller.signal, skip })
 
     // cleanUp function.
     return () => {
       controller.abort('Messages Unmounted')
     }
-  }, [selectedChat])
+  }, [skip, selectedChat])
 
   //   re-render when chats update
-  useEffect(() => {}, [messages])
+  useEffect(() => {
+    if (messages?.length > 0) {
+      // setScrollToBottom(false)
+      dispatch(setScrollToBottom(false))
+    }
+  }, [messages])
+
+  // Function for infinte scroll.
+  const handleScroll = e => {
+    const { scrollTop, clientTop } = e.target
+    const numberOfFetchedMessages = messages?.length
+
+    // shows "no more messages" alert only if scrolled.
+    setShowMoreMessages(true)
+
+    // Will make a fetch call when we scroll to last loaded message.
+    if (scrollTop === 0) {
+      if (scrollToBottom == true) {
+        // setScrollToBottom(false)
+        dispatch(setScrollToBottom(false))
+      }
+
+      console.log('Last message')
+      if (!hasMore) {
+        console.log('No more massgese')
+        return
+      }
+      setSkip(numberOfFetchedMessages)
+      console.log(skip)
+      return
+    }
+
+    if (scrollTop > 10) {
+      if (scrollToBottom !== true) dispatch(setScrollToBottom(true))
+    }
+  }
 
   return (
-    <div className='mt-3'>
-      {/* Show skeleton if loading */}
-      {loading && <MessageSkeleton />}
+    <div className='overflow-auto mt-auto' onScroll={handleScroll}>
+      <div className='mt-3'>
+        {/* Show skeleton if loading */}
+        {loading == true && <MessageSkeleton />}
 
-      {/* Show messages if prior conversAtion present */}
+        {loading == false && hasMore == false && showNoMoreMessage == true && (
+          <p className='text-center my-4'>No more messages</p>
+        )}
 
-      {!loading &&
-        messages.length > 0 &&
-        messages?.map(message => (
-          <div key={message?._id}>
-            <Message chat={message}></Message>
-          </div>
-        ))}
+        {/* Show messages if prior conversAtion present */}
 
-      {/* If no prior conversation */}
-      {!loading && messages.length === 0 && (
-        <p className='text-center'>Send a message</p>
-      )}
+        {!loading &&
+          messages?.length > 0 &&
+          messages?.map(message => (
+            <div key={message?._id}>
+              <Message chat={message} scrollToBottom={scrollToBottom}></Message>
+            </div>
+          ))}
+
+        {/* If no prior conversation */}
+        {!loading && messages?.length === 0 && (
+          <p className='text-center'>Send a message</p>
+        )}
+      </div>
     </div>
   )
 }

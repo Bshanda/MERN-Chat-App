@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux' 
 
 export const ChatContext = createContext()
 
@@ -10,9 +10,13 @@ export const useChatContext = () => {
 export const ChatContextProvider = ({ children }) => {
   const chats = useSelector(state => state.chatList.value)
   const [filteredChats, setFilteredChats] = useState(chats)
+  const selectedChat = useSelector(state => {
+    state.selectedChat.value
+  })
+ 
 
   const filterChats = search => {
-    console.log('Chat context filter called');
+    console.log('Chat context filter called')
     if (search == '') {
       setFilteredChats(chats)
       return
@@ -24,10 +28,14 @@ export const ChatContextProvider = ({ children }) => {
     setFilteredChats(filtered)
   }
 
+  // Update filteredChats when chats changes
   useEffect(() => {
-    // Update filteredChats when chats changes
     setFilteredChats(chats)
   }, [chats])
+
+  // empty downloaded chats when selected chat is changed.
+  useEffect(() => {  
+  }, [selectedChat])
 
   return (
     <ChatContext.Provider value={{ filterChats, filteredChats }}>

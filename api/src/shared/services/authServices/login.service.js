@@ -13,7 +13,7 @@ export const loginService = async ({ username, password }) => {
 
     // return if user not found
     if (!user) {
-      return { data: 'User not found', status: HttpStatusCodes.BAD_REQUEST }
+      return { error: 'User not found', status: HttpStatusCodes.BAD_REQUEST }
     }
     // checking password
     const VerifyPassword = verifyPassword(password, user.password) // 'user.password' is the hash
@@ -21,7 +21,7 @@ export const loginService = async ({ username, password }) => {
 
     // returns if wrong password
     if (!VerifyPassword)
-      return { data: 'Wrong password', status: HttpStatusCodes.UNAUTHORIZED }
+      return { error: 'Wrong password', status: HttpStatusCodes.BAD_REQUEST }
 
     // Removing password for security.
     user.password = null

@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import useSendMessage from '../../hooks/useSendMessage'
 import { useSocketContext } from '../../context/SocketContext'
 import toast from 'react-hot-toast'
+import { setScrollToBottom } from '../../features/authUser/messagesSlice'
 
 const ChatInput = () => {
   const [text, setText] = useState('')
@@ -12,16 +13,18 @@ const ChatInput = () => {
   const authUser = useSelector(state => state.authUser.value)
   const selectedChat = useSelector(state => state.selectedChat.value)
 
+  // scroll to bottom of sender's chat if a new message is sent.
+  const dispatch = useDispatch()
+
   const handleTextSubmit = e => {
     e.preventDefault()
     if (text == '') {
       toast.error('Please write something')
       return
     }
+    dispatch(setScrollToBottom(true))
 
     sendMessage(text)
-    socket.emit('newMessage', { text, senderId: authUser?._id, recieverId:selectedChat?._id })
-
     setText('')
   }
 

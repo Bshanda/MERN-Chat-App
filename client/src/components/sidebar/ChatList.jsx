@@ -4,15 +4,18 @@ import useChatListFetch from '../../hooks/useChatListFetch'
 // import useChatSearch from '../../hooks/useChatListSearch'
 import { useSelector } from 'react-redux'
 import { useChatContext } from '../../context/ChatContext'
+import MessageSkeleton from '../skeleton/MessagesSkeleton'
 
 const ChatList = () => {
   // const chatList = useSelector(state => state.chatList.filteredChats)
 
-  const { fetchChatList } = useChatListFetch()
+  const { loading, fetchChatList } = useChatListFetch()
 
   const { filteredChats } = useChatContext()
 
-  useEffect(() => {}, [filteredChats])
+  useEffect(() => {
+    console.log('Loading chats :-', loading)
+  }, [filteredChats])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -24,9 +27,10 @@ const ChatList = () => {
 
   return (
     <div className={`max-w-screen-sm rounded-lg bg-base-200 overflow-auto`}>
-      {filteredChats?.map(chat => (
-        <ListItem key={chat?._id} user={chat} />
-      ))}
+      {loading && <MessageSkeleton />}
+
+      {!loading &&
+        filteredChats?.map(chat => <ListItem key={chat?._id} user={chat} />)}
     </div>
   )
 }

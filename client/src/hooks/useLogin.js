@@ -26,9 +26,12 @@ const useLogin = () => {
         body: JSON.stringify({ username, password })
       })
 
-      let resData = await res?.json() // res = {data, Token, status}
+      let resData = await res?.json() // res = {data, Token} || {error}
+      console.log('Login use :-',resData);
       if (resData?.error) {
-        throw new Error(resData.error)
+        toast.error(resData?.error)
+        // throw new Error(resData.error)
+        return
       }
 
       // updaing user state

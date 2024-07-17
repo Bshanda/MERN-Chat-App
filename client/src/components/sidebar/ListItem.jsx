@@ -1,6 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { setSelectedChat } from '../../features/authUser/selectedChatSlice'
 import { useSocketContext } from '../../context/SocketContext'
+import {
+  clearMessages,
+  setHasMore
+} from '../../features/authUser/messagesSlice'
 
 const ListItem = ({ user }) => {
   const selectedChat = useSelector(state => state.selectedChat.value)
@@ -12,6 +16,8 @@ const ListItem = ({ user }) => {
 
   const handleChatClick = () => {
     dispatch(setSelectedChat(user))
+    dispatch(clearMessages())
+    dispatch(setHasMore(true))
   }
 
   return (

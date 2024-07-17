@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose'
 import HttpStatusCodes from '../constants/HttpStatusCodes.js'
 import Chat from '../db/models/chat.model.js'
 import Message from '../db/models/messages.models.js'
@@ -8,6 +9,13 @@ export const sendMessage = async (req, res) => {
     const { message } = req.body
     const { Id: recieverId } = req.params
     const senderId = req.user._id
+
+    if (senderId == recieverId) {
+      return res
+        .status(HttpStatusCodes.BAD_REQUEST)
+        .json({ error: 'Sender and reciever cannot be same' })
+        .end()
+    }
 
     let chat = await Chat.findOne({
       participants: { $all: [senderId, recieverId] }
@@ -64,25 +72,55 @@ export const sendMessage = async (req, res) => {
 
 export const getChat = async (req, res) => {
   try {
-    const { Id: receiverId } = req.params
+    const { Id: receiverId, skip: skip } = req.params
     const senderId = req.user._id
+    const DEFAULT_LIMIT = 20
 
     console.log('Reciever Id:-', receiverId)
+    console.log('Sender Id:-', senderId)
 
-    // messages between two user. getting all messages ids from chat and then using those id's to fetch messages.
+    // This doesnot work
+    // let chats = await Chat.findOne({
+    //   participants: { $all: [senderId, receiverId] },messages:{$limit:DEFAULT_LIMIT}
+    // })
+    //   .populate('messages')
+    //   .skip(skip)
+    //   .limit(10)
+
+    // messages between two user. getting all messages ids from chat and then using
+    // those id's to fetch messages.
+    // Using options in populate to limit and skip for infinite scroll.
+
     let chats = await Chat.findOne({
       participants: { $all: [senderId, receiverId] }
-    }).populate('messages')
-
-    console.log('Sender id:-', senderId)
-
-    // returns empty array to the client if no chat is present
-    if (!chats) {
-      return res.status(HttpStatusCodes.OK).json({ data: [] }).end()
-    }
+    }).populate({
+      path: 'messages',
+      options: {
+        sort: { createdAt: -1 }, // Sort messages by createdAt descending
+        skip: skip, // Number of messages to skip
+        limit: DEFAULT_LIMIT // Limit the number of messages fetched
+      }
+    })
 
     // console.log('Chats between them:-', chats.messages)
-    return res.status(HttpStatusCodes.OK).json({ data: chats.messages }).end()
+    // let chats = await Chat.find({
+    //   participants: { $all: [senderId, receiverId] }
+    // }).populate('messages')
+
+    console.log('Chats', chats)
+
+    // returns empty array to the client if no chat is present
+    if (chats?.length <= 0 || chats == null) {
+      return res.status(HttpStatusCodes.OK).json({ data: null }).end()
+    }
+
+    // reversing, so that latest messages show at the bottom of the front end.
+    chats.messages.reverse()
+
+    return res
+      .status(HttpStatusCodes.OK)
+      .json({ data: chats.messages })
+      .end()
   } catch (error) {
     console.log('Error: Internal server error in get message controller')
     return res

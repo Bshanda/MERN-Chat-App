@@ -11,7 +11,9 @@ const MessageContainer = () => {
   const messages = useSelector(state => state.messages.value)
 
   // re-render when a chat or conversation is selected.
-  useEffect(() => {}, [selectedChat])
+  useEffect(() => {
+    
+  }, [selectedChat])
 
   //
 
@@ -32,9 +34,9 @@ const MessageContainer = () => {
         <>
 
           <Header selectedChat={selectedChat}></Header>
-          <div className='overflow-auto mt-auto'>
+          
             <Messages></Messages>
-          </div>
+          
           <ChatInput />
         </>
       )}

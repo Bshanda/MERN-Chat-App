@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: []
+  value: [],
+  hasMore: true,
+  scrollToBottom: true
 }
 
 const messagesSlice = createSlice({
@@ -9,14 +11,41 @@ const messagesSlice = createSlice({
   initialState,
   reducers: {
     setMessages: (state, action) => {
-      state.value = action.payload
+      if (state.value?.length == 0) {
+        console.log('Messages setted', action.payload)
+        state.value = action.payload
+        return
+      }
+      state.value = [...action.payload, ...state.value]
     },
-    addNewMessage:(state, action)=>{
+    clearMessages: state => {
+      state.value = []
+    },
+    addMessages: (state, action) => {
+      console.log('Msg slice have masseges')
+      if (action?.payload !== null || undefined || 0) {
+        state.value = [...state.value, ...action.payload]
+      }
+    },
+    addOneMessage: (state, action) => {
       state.value = [...state.value, action.payload]
+    },
+    setHasMore: (state, action) => {
+      state.hasMore = action.payload
+    },
+    setScrollToBottom: (state, action) => {
+      state.scrollToBottom = action.payload
     }
   }
 })
 
-export const { setMessages, addNewMessage } = messagesSlice.actions
+export const {
+  setMessages,
+  addMessages,
+  addOneMessage,
+  clearMessages,
+  setHasMore,
+  setScrollToBottom
+} = messagesSlice.actions
 
 export default messagesSlice.reducer
