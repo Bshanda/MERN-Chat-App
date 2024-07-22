@@ -3,14 +3,16 @@ import Sidebar from '../components/sidebar/Sidebar'
 import useLogin from '../hooks/useLogin'
 import { useSelector } from 'react-redux'
 import MessageContainer from '../components/chat/MessageContainer'
+import { SocketContextProvider } from '../context/SocketContext'
 
-const Home = () => { 
-
+const Home = () => {
   return (
     <div>
       <div className='flex justify-center h-screen'>
-        <Sidebar />
-        <MessageContainer />
+        <SocketContextProvider>
+          <Sidebar />
+          <MessageContainer />
+        </SocketContextProvider>
       </div>
     </div>
   )

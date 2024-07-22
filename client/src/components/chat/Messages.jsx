@@ -29,6 +29,7 @@ const Messages = () => {
   // Will fetch messages when user selects another chat or reched the end of fetched messages
   useEffect(() => {
     setShowMoreMessages(false)
+    setScrollToBottom(true)
     const controller = new AbortController()
 
     // console.log('Messages fetch req');
@@ -43,7 +44,6 @@ const Messages = () => {
   //   re-render when chats update
   useEffect(() => {
     if (messages?.length > 0) {
-      // setScrollToBottom(false)
       dispatch(setScrollToBottom(false))
     }
   }, [messages])

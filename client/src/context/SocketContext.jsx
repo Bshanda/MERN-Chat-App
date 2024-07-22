@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import useLogin from '../hooks/useLogin'
 import io from 'socket.io-client'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 const SocketContext = createContext()
 
 export const useSocketContext = () => {
@@ -12,6 +12,7 @@ export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null)
   const [onlineUsers, setOnlineUsers] = useState([])
   const authUser = useSelector(state => state.authUser.value)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (authUser?._id) {
@@ -25,8 +26,10 @@ export const SocketContextProvider = ({ children }) => {
       setSocket(socket)
 
       // socket.on(<event>:string, callback:any) can be used on both server and client.
-      socket.on('getOnlineUsers', users => {
-        setOnlineUsers(users)
+      socket.on('getOnlineUsers', async users => {
+        console.log('online users:-', users)
+        const OnlineUsers = await users
+        setOnlineUsers(OnlineUsers)
       })
 
       return () => {
@@ -36,6 +39,7 @@ export const SocketContextProvider = ({ children }) => {
       if (socket) {
         socket.close()
         setSocket(null)
+        return
       }
     }
   }, [authUser])

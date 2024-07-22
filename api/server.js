@@ -35,7 +35,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'))
 })
 
-server.listen(PORT, () => {
+server.listen(4080, async () => {
   console.log(`Server running at ${PORT}`)
-  initDb()
+  initDb() 
 })

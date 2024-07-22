@@ -30,6 +30,10 @@ const isLoggedIn = async (req, res, next) => {
         .end()
     }
 
+    if (decoded.error) {
+      throw new Error(decoded.error)
+    }
+
     const user = await User.findById(decoded._id).select('-password')
     // returns if user not found
     if (!user) {
@@ -43,9 +47,9 @@ const isLoggedIn = async (req, res, next) => {
 
     next()
   } catch (error) {
-    console.log('Error in auth middelware',error);
+    console.log('Error in auth middelware')
     return res
-      .status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
+      .status(HttpStatusCodes.BAD_REQUEST)
       .json({ error })
       .end()
   }

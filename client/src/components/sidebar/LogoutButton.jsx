@@ -1,6 +1,7 @@
 import { BiLogOut } from 'react-icons/bi'
 import { useDispatch } from 'react-redux'
 import { removeToken, removeUser } from '../../features/authUser/authUserSlice'
+ 
 import { useNavigate } from 'react-router-dom'
 // import useLogout from '../../hooks/useLogout'
 
@@ -10,6 +11,7 @@ const LogoutButton = () => {
   const logout = () => {
     dispatch(removeUser())
     dispatch(removeToken())
+    // dispatch(clearMessages())
 
     navigate('login')
     // console.log('logout called')

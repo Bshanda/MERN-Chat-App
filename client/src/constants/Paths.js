@@ -4,7 +4,8 @@ export default {
   Auth: {
     Signup: `${ApiEndPoint}/auth/signup`,
     Login: `${ApiEndPoint}/auth/login`,
-    Logout: `${ApiEndPoint}/auth/logout`
+    Logout: `${ApiEndPoint}/auth/logout`,
+    checkToken: `${ApiEndPoint}/auth/validateToken`
   },
   Message: {
     Send: `${ApiEndPoint}/message/send/`,

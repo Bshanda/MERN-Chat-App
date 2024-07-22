@@ -25,18 +25,11 @@ const Message = ({ chat, scrollToBottom }) => {
   }, [])
 
   return (
-    <div
-      className={`message flex my-1 ${
-        fromMe ? 'justify-end' : 'justify-start'
-      } text-xs  `}
-      ref={bottomRef}
-    >
-      <div>
-        <div
-          className={`max-w-fit p-3 mx-2 ${
-            fromMe ? 'bg-green-500 text-gray' : 'bg-sky-500'
-          }  rounded-e-xl rounded-es-xl`}
-        >
+    <div ref={bottomRef}>
+       
+
+      <div className={`chat chat-${fromMe ? 'end' : 'start'} text-sm`}>
+        <div className={`chat-bubble ${fromMe ? 'bg-sky-500' : ''}`}>
           {chat?.message}
         </div>
       </div>

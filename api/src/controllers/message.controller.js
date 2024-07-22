@@ -2,7 +2,7 @@ import { isValidObjectId } from 'mongoose'
 import HttpStatusCodes from '../constants/HttpStatusCodes.js'
 import Chat from '../db/models/chat.model.js'
 import Message from '../db/models/messages.models.js'
-import { getRecieverSocketId, io } from '../socket/socket.js'
+import { getUserSocketId, io } from '../socket/socket.js'
 
 export const sendMessage = async (req, res) => {
   try {
@@ -47,14 +47,36 @@ export const sendMessage = async (req, res) => {
 
     // socket io functionality for live chatting.
 
-    const receiverSocketId = getRecieverSocketId(recieverId)
+    // getting socketId's(if many) from redis.
+    const receiverSocketId = await getUserSocketId(recieverId)
+    const senderSocketId = await getUserSocketId(senderId)
 
     // only emits if reciever is online and after the message is saved.
     if (receiverSocketId) {
       //  io.to(<socket_id>).emit() //used to send events to specific client
-      // emits only if msg in not nothing
-      if (newMessage != '')
-        io.to(receiverSocketId).emit('newMessage', newMessage)
+      // donot iterate over RecieverSocketId's if for some reason redis server lost its data.
+      if (receiverSocketId?.length === 0) {
+        return res.status(HttpStatusCodes.OK).json({ data: newMessage }).end()
+      }
+      if (receiverSocketId?.length >= 1) {
+        for (let i = 0; i < receiverSocketId.length; i++) {
+          io.to(receiverSocketId[i]).emit('newMessage', newMessage)
+        }
+      }
+    }
+
+    // if sender has multiple instances.Send to every one
+    if (senderSocketId) {
+      //  io.to(<socket_id>).emit() //used to send events to specific client
+      // donot iterate over RecieverSocketId's if for some reason redis server lost its data.
+      if (senderSocketId?.length === 0) {
+        return res.status(HttpStatusCodes.OK).json({ data: newMessage }).end()
+      }
+      if (senderSocketId?.length > 1) {
+        for (let i = 0; i < receiverSocketId.length; i++) {
+          io.to(senderSocketId[i]).emit('newMessage', newMessage)
+        }
+      }
     }
 
     return res.status(HttpStatusCodes.OK).json({ data: newMessage }).end()
@@ -117,10 +139,7 @@ export const getChat = async (req, res) => {
     // reversing, so that latest messages show at the bottom of the front end.
     chats.messages.reverse()
 
-    return res
-      .status(HttpStatusCodes.OK)
-      .json({ data: chats.messages })
-      .end()
+    return res.status(HttpStatusCodes.OK).json({ data: chats.messages }).end()
   } catch (error) {
     console.log('Error: Internal server error in get message controller')
     return res

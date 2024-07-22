@@ -13,9 +13,11 @@ const messagesSlice = createSlice({
     setMessages: (state, action) => {
       if (state.value?.length == 0) {
         console.log('Messages setted', action.payload)
+        state.scrollToBottom = true
         state.value = action.payload
         return
       }
+      state.scrollToBottom = false
       state.value = [...action.payload, ...state.value]
     },
     clearMessages: state => {

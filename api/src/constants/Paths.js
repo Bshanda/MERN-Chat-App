@@ -5,7 +5,8 @@ export default {
     Base: '/auth',
     Signup: '/signup',
     Login: '/login',
-    Logout: '/logout'
+    Logout: '/logout',
+    validToken: '/validateToken'
   },
   Message: {
     Base: '/message',

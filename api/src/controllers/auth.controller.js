@@ -78,10 +78,15 @@ const logout = async (req, res) => {
   }
 }
 
+const checkToken = (req, res) => {
+  return res.status(HttpStatusCodes.OK).json({ validToken: true })
+}
+
 const authController = {
   signUp,
   login,
-  logout
+  logout,
+  checkToken
 }
 
 export default authController
