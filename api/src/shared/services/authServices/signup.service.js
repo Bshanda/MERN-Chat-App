@@ -1,4 +1,4 @@
-import User from '../../../db/models/auth.models.js'
+import User from '../../../db/models/user.models.js'
 import { generateHash } from '../../utils/passwordUtils.js'
 
 export const singupService = async newuser => {
@@ -18,7 +18,7 @@ export const singupService = async newuser => {
     // Hashing password for security
     const hash = generateHash(password)
 
-    // console.log('signu pservice called after user findone')
+    // console.log('signup serVice called after user findone')
     // Setting profile pic for boy and girl.
     //https://avatar-placeholder.iran.liara.run/
 

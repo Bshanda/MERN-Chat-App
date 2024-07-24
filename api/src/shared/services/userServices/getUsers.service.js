@@ -1,5 +1,5 @@
 import HttpStatusCodes from '../../../constants/HttpStatusCodes.js'
-import User from '../../../db/models/auth.models.js'
+import User from '../../../db/models/user.models.js'
 
 //
 const getUsersService = async loggedInUser => {

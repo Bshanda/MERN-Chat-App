@@ -35,6 +35,8 @@ const useSendMessage = () => {
         throw new Error(res.error)
       }
 
+      console.log('Socket res',res?.socketRes);
+
       // console.log('Server response for send message', res.data)
       // add new message to existing messages.
       dispatch(addOneMessage(res.data))

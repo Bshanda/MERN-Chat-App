@@ -16,16 +16,16 @@ const signUp = async (req, res) => {
 
     if (status !== true) {
       console.log('Error for not status')
-      return res.status(HttpStatusCodes.CONFLICT).json({ error: data })
+      return res.status(HttpStatusCodes.CONFLICT).json({ error: data }).end()
     }
 
     // creates a token if user credentials are correct.
     const Token = createToken(data)
 
-    return res.status(HttpStatusCodes.CREATED).json({ data, status, Token })
+    return res.status(HttpStatusCodes.CREATED).json({ data, status, Token }).end()
   } catch (error) {
     console.log('Error in controller try catch')
-    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ Error })
+    return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ Error }).end()
   }
 }
 
@@ -78,15 +78,10 @@ const logout = async (req, res) => {
   }
 }
 
-const checkToken = (req, res) => {
-  return res.status(HttpStatusCodes.OK).json({ validToken: true })
-}
-
 const authController = {
   signUp,
   login,
-  logout,
-  checkToken
+  logout
 }
 
 export default authController

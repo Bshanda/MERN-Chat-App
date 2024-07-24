@@ -13,6 +13,8 @@ export default {
   },
   Users: {
     Base: `${ApiEndPoint}/users/`,
-    GetUserList: `${ApiEndPoint}/users`
+    GetUserList: `${ApiEndPoint}/users`,
+    UpdateSelf: `${ApiEndPoint}/users/selfUpdate
+`
   }
 }

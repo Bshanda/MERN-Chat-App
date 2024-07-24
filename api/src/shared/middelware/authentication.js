@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken'
 import EnvVars from '../../constants/EnvVars.js'
 import HttpStatusCodes from '../../constants/HttpStatusCodes.js'
-import User from '../../db/models/auth.models.js'
+import User from '../../db/models/user.models.js'
 
-const isLoggedIn = async (req, res, next) => {
+const authentication = async (req, res, next) => {
   // const token = req.headers.authorization
   let token = req.headers['authorization']
 
@@ -44,15 +44,13 @@ const isLoggedIn = async (req, res, next) => {
     }
 
     req.user = user
+    
 
     next()
   } catch (error) {
-    console.log('Error in auth middelware')
-    return res
-      .status(HttpStatusCodes.BAD_REQUEST)
-      .json({ error })
-      .end()
+    console.log('Error in auth middelware', error)
+    return res.status(HttpStatusCodes.BAD_REQUEST).json({ error }).end()
   }
 }
 
-export default isLoggedIn
+export default authentication

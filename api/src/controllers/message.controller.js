@@ -1,8 +1,13 @@
-import { isValidObjectId } from 'mongoose'
+// import { isValidObjectId } from 'mongoose'
 import HttpStatusCodes from '../constants/HttpStatusCodes.js'
-import Chat from '../db/models/chat.model.js'
-import Message from '../db/models/messages.models.js'
-import { getUserSocketId, io } from '../socket/socket.js'
+// import Chat from '../db/models/chat.model.js'
+// import Message from '../db/models/messages.models.js'
+// import { getUserSocketId, io } from '../socket/socket.js'
+import { getChatService } from '../shared/services/messageServices/getChat.service.js'
+import {
+  saveToDb,
+  emitMsgToSockets
+} from '../shared/services/messageServices/sendChat.service.js'
 
 export const sendMessage = async (req, res) => {
   try {
@@ -10,76 +15,24 @@ export const sendMessage = async (req, res) => {
     const { Id: recieverId } = req.params
     const senderId = req.user._id
 
-    if (senderId == recieverId) {
-      return res
-        .status(HttpStatusCodes.BAD_REQUEST)
-        .json({ error: 'Sender and reciever cannot be same' })
-        .end()
+    const saveRes = await saveToDb(recieverId, senderId, message)
+
+    if (saveRes?.error) {
+      throw new Error(saveRes?.error)
     }
 
-    let chat = await Chat.findOne({
-      participants: { $all: [senderId, recieverId] }
-    })
-    // console.log('Send Message called')
+    const chat = saveRes?.data?.chat
 
-    // For new chat between sender and reciever.If, first chat
-    if (!chat) {
-      chat = await Chat.create({
-        participants: [senderId, recieverId]
-      })
-    }
+    const newMessage = saveRes?.data?.newMessage
 
-    const newMessage = new Message({
-      senderId,
-      recieverId,
-      message
-    })
+    const emitRes = await emitMsgToSockets(recieverId, senderId, newMessage)
 
-    if (newMessage) {
-      chat.messages.push(newMessage._id)
-    }
-    // this will not run in parellal
-    // await newMessage.save()
-    // await chat.save()
+    // console.log(emitRes?.data)
 
-    // chat and message will save in parellal
-    await Promise.all([chat.save(), newMessage.save()])
-
-    // socket io functionality for live chatting.
-
-    // getting socketId's(if many) from redis.
-    const receiverSocketId = await getUserSocketId(recieverId)
-    const senderSocketId = await getUserSocketId(senderId)
-
-    // only emits if reciever is online and after the message is saved.
-    if (receiverSocketId) {
-      //  io.to(<socket_id>).emit() //used to send events to specific client
-      // donot iterate over RecieverSocketId's if for some reason redis server lost its data.
-      if (receiverSocketId?.length === 0) {
-        return res.status(HttpStatusCodes.OK).json({ data: newMessage }).end()
-      }
-      if (receiverSocketId?.length >= 1) {
-        for (let i = 0; i < receiverSocketId.length; i++) {
-          io.to(receiverSocketId[i]).emit('newMessage', newMessage)
-        }
-      }
-    }
-
-    // if sender has multiple instances.Send to every one
-    if (senderSocketId) {
-      //  io.to(<socket_id>).emit() //used to send events to specific client
-      // donot iterate over RecieverSocketId's if for some reason redis server lost its data.
-      if (senderSocketId?.length === 0) {
-        return res.status(HttpStatusCodes.OK).json({ data: newMessage }).end()
-      }
-      if (senderSocketId?.length > 1) {
-        for (let i = 0; i < receiverSocketId.length; i++) {
-          io.to(senderSocketId[i]).emit('newMessage', newMessage)
-        }
-      }
-    }
-
-    return res.status(HttpStatusCodes.OK).json({ data: newMessage }).end()
+    return res
+      .status(HttpStatusCodes.OK)
+      .json({ data: newMessage, socketRes: emitRes?.data })
+      .end()
   } catch (error) {
     console.log(
       'Error: Internal server error in send message controller',
@@ -94,12 +47,20 @@ export const sendMessage = async (req, res) => {
 
 export const getChat = async (req, res) => {
   try {
-    const { Id: receiverId, skip: skip } = req.params
+    const { Id: receiverId, skip } = req.params
     const senderId = req.user._id
-    const DEFAULT_LIMIT = 20
+    const limit = 20
 
-    console.log('Reciever Id:-', receiverId)
-    console.log('Sender Id:-', senderId)
+    // console.log('Reciever Id:-', receiverId)
+    // console.log('Sender Id:-', senderId)
+
+    const chats = await getChatService(receiverId, senderId, limit, skip)
+
+    if (chats?.error) throw new Error(chats.error)
+    if (chats?.data === null)
+      return res.status(HttpStatusCodes.OK).json({ data: chats?.data }).end()
+
+    return res.status(HttpStatusCodes.OK).json({ data: chats?.data }).end()
 
     // This doesnot work
     // let chats = await Chat.findOne({
@@ -113,16 +74,16 @@ export const getChat = async (req, res) => {
     // those id's to fetch messages.
     // Using options in populate to limit and skip for infinite scroll.
 
-    let chats = await Chat.findOne({
-      participants: { $all: [senderId, receiverId] }
-    }).populate({
-      path: 'messages',
-      options: {
-        sort: { createdAt: -1 }, // Sort messages by createdAt descending
-        skip: skip, // Number of messages to skip
-        limit: DEFAULT_LIMIT // Limit the number of messages fetched
-      }
-    })
+    // let chats = await Chat.findOne({
+    //   participants: { $all: [senderId, receiverId] }
+    // }).populate({
+    //   path: 'messages',
+    //   options: {
+    //     sort: { createdAt: -1 }, // Sort messages by createdAt descending
+    //     skip: skip, // Number of messages to skip
+    //     limit: DEFAULT_LIMIT // Limit the number of messages fetched
+    //   }
+    // })
 
     // console.log('Chats between them:-', chats.messages)
     // let chats = await Chat.find({
@@ -141,7 +102,7 @@ export const getChat = async (req, res) => {
 
     return res.status(HttpStatusCodes.OK).json({ data: chats.messages }).end()
   } catch (error) {
-    console.log('Error: Internal server error in get message controller')
+    console.log('Error: Internal server error in get message controller', error)
     return res
       .status(HttpStatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: error })

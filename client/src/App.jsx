@@ -14,7 +14,7 @@ function App () {
   // const authUser = useSelector(state => state.authUser.value)
 
   return (
-    <div className='min-h-screen overflow-hidden'>
+    <div className='min-h-screen overflow-hidden bg-slate-600'>
       <Routes>
         <Route
           path='/'

@@ -1,10 +1,8 @@
 // import { useEffect, useState } from 'react'
-import ChatList from './ChatList'
-import LogoutButton from './LogoutButton'
-import { useSelector } from 'react-redux'
-// import useChatListFetch from '../../hooks/useChatListFetch'
-import SearchInput from './SearchInput'
+import ChatList from './chats/ChatList' 
 import { ChatContextProvider } from '../../context/ChatContext'
+import CurrentUser from './user/CurrentUser'
+import SearchInput from './search/SearchInput'
 
 const Sidebar = () => {
   return (
@@ -14,7 +12,8 @@ const Sidebar = () => {
         <div className='divider px-3'></div>
         <ChatList />
       </ChatContextProvider>
-      <LogoutButton />
+      <CurrentUser />
+      {/* <LogoutButton /> */}
     </div>
   )
 }

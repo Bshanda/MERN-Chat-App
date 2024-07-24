@@ -11,6 +11,7 @@ const Messages = () => {
   const [skip, setSkip] = useState(0)
   const scrollToBottom = useSelector(state => state.messages?.scrollToBottom)
   const [showNoMoreMessage, setShowMoreMessages] = useState(true)
+  const [divider, setDivider] = useState(false)
 
   // fecthing selected user and messages from redux
   const selectedChat = useSelector(state => state.selectedChat?.value)
@@ -39,13 +40,13 @@ const Messages = () => {
     return () => {
       controller.abort('Messages Unmounted')
     }
-  }, [skip, selectedChat])
+  }, [skip, selectedChat, divider])
 
   //   re-render when chats update
   useEffect(() => {
     if (messages?.length > 0) {
-      dispatch(setScrollToBottom(false))
     }
+    // dispatch(setScrollToBottom(false))
   }, [messages])
 
   // Function for infinte scroll.
@@ -58,9 +59,10 @@ const Messages = () => {
 
     // Will make a fetch call when we scroll to last loaded message.
     if (scrollTop === 0) {
+      setDivider(true)
       if (scrollToBottom == true) {
         // setScrollToBottom(false)
-        dispatch(setScrollToBottom(false))
+        // dispatch(setScrollToBottom(false))
       }
 
       console.log('Last message')
@@ -99,7 +101,7 @@ const Messages = () => {
           ))}
 
         {/* If no prior conversation */}
-        {!loading && messages?.length === 0 && (
+        {loading === false && messages?.length === 0 && (
           <p className='text-center'>Send a message</p>
         )}
       </div>

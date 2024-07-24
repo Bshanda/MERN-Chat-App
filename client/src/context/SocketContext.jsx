@@ -13,6 +13,7 @@ export const SocketContextProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState([])
   const authUser = useSelector(state => state.authUser.value)
   const navigate = useNavigate()
+  const token = useSelector(state => state.authUser.token)
 
   useEffect(() => {
     if (authUser?._id) {
@@ -20,8 +21,16 @@ export const SocketContextProvider = ({ children }) => {
       const socket = io('http://localhost:4080', {
         query: {
           userId: authUser?._id
-        }
+        } 
       })
+
+      // On connection error.
+      // socket.on('connect_error', err => {
+      //   console.log(err instanceof Error) // true
+      //   console.log(err.message) // not authorized
+      //   console.log(err.data) // { content: "Please retry later" }
+      //   return
+      // })
 
       setSocket(socket)
 

@@ -13,8 +13,9 @@ const useListenMessages = () => {
 
   useEffect(() => {
     // socket.on() is used to listen to the events. can be used both on client and server side
-    socket?.on('newMessage', ( message) => {
-      dispatch(addOneMessage(message))
+    console.log('Listning to newMessage events');
+    socket?.on('newMessage', (message) => {
+       dispatch(addOneMessage(message))
     })
 
     return () => {

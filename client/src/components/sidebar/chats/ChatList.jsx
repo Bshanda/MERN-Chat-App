@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import ListItem from './ListItem'
-import useChatListFetch from '../../hooks/useChatListFetch'
+import useChatListFetch from '../../../hooks/useChatListFetch'
 // import useChatSearch from '../../hooks/useChatListSearch'
 import { useSelector } from 'react-redux'
-import { useChatContext } from '../../context/ChatContext'
-import MessageSkeleton from '../skeleton/MessagesSkeleton'
+import { useChatContext } from '../../../context/ChatContext'
+import MessageSkeleton from '../../skeleton/MessagesSkeleton'
 
 const ChatList = () => {
   // const chatList = useSelector(state => state.chatList.filteredChats)

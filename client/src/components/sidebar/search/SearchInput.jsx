@@ -1,7 +1,7 @@
 // import { IoSearchSharp } from 'react-icons/io5'
-import { useEffect, useState } from 'react'
-import { useChatContext } from '../../context/ChatContext'
-import { useDebounce } from '../../hooks/useDebounce'
+import { useEffect, useState } from 'react' 
+import { useDebounce } from '../../../hooks/useDebounce'
+import { useChatContext } from '../../../context/ChatContext'
 // import useChatSearch from '../../hooks/useChatListSearch'
 
 const SearchInput = () => {

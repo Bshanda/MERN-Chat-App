@@ -15,6 +15,14 @@ export default {
   },
   Users: {
     Base: '/users/',
-    Users: '/'
+    Users: '/',
+    selfUpdate: '/selfUpdate', 
+    block: '/block/:id'
+  },
+  Admin: {
+    Base: '/admin',
+    GetUsers: '/users',
+    editUser: '/editUser',
+    makeAdmin: '/makeAdmin/:id'
   }
 }

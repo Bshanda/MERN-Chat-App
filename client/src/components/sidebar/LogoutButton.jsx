@@ -1,8 +1,9 @@
 import { BiLogOut } from 'react-icons/bi'
 import { useDispatch } from 'react-redux'
 import { removeToken, removeUser } from '../../features/authUser/authUserSlice'
- 
+
 import { useNavigate } from 'react-router-dom'
+import { clearMessages } from '../../features/authUser/messagesSlice'
 // import useLogout from '../../hooks/useLogout'
 
 const LogoutButton = () => {
@@ -11,15 +12,20 @@ const LogoutButton = () => {
   const logout = () => {
     dispatch(removeUser())
     dispatch(removeToken())
-    // dispatch(clearMessages())
+    dispatch(clearMessages())
 
     navigate('login')
     // console.log('logout called')
   }
 
   return (
-      <div className='mt-auto' onClick={logout}>
-      <BiLogOut className='w-6 h-6 cursor-pointer' />
+    <div className='flex items-center' onClick={logout}>
+      <div>
+        <BiLogOut size={'30px'}/>
+      </div>
+      <div>
+        LogOut
+      </div>
     </div>
   )
 }

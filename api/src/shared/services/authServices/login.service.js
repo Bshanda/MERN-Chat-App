@@ -1,4 +1,4 @@
-import User from '../../../db/models/auth.models.js'
+import User from '../../../db/models/user.models.js'
 import { verifyPassword } from '../../utils/passwordUtils.js'
 import EnvVars from '../../../constants/EnvVars.js'
 import { createToken } from '../../utils/createToken.js'

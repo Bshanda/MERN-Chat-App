@@ -26,8 +26,6 @@ const Message = ({ chat, scrollToBottom }) => {
 
   return (
     <div ref={bottomRef}>
-       
-
       <div className={`chat chat-${fromMe ? 'end' : 'start'} text-sm`}>
         <div className={`chat-bubble ${fromMe ? 'bg-sky-500' : ''}`}>
           {chat?.message}

@@ -44,7 +44,7 @@ export const getUserSocketId = async userId => {
 const userSocketMap = {} // {userId:[socketId]}
 
 io.on('connection', async socket => {
-  // console.log('A user connected:-', socket.id)
+  console.log('A user connected:-', socket.id)
   const userId = socket.handshake.query.userId
 
   if (userId != undefined) {
@@ -133,6 +133,10 @@ io.on('connection', async socket => {
   socket.on('disconnect', async () => {
     console.log('User disconnected ', socket.id)
 
+    if (!redis) {
+      console.log('not connected to redis')
+      return
+    }
     try {
       let userSocketIds = await redis.hGet('onlineUsers', `${userId}`)
       userSocketIds = JSON.parse(userSocketIds)
@@ -141,7 +145,7 @@ io.on('connection', async socket => {
       if (userSocketIds?.length === 0) {
         return
       }
-      // delete the userId from redis cache if user has one online instance.
+      // delete the userId from redis cache if user this last online instance of user.
       if (userSocketIds?.length == 1) {
         console.log('This user has one instance')
         redis
