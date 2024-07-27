@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 
 const userSchema = new mongoose.Schema(
   {
@@ -8,6 +8,13 @@ const userSchema = new mongoose.Schema(
     gender: { type: String, required: true, enum: ['male', 'female'] },
     profilePic: { type: String, default: '' },
     admin: { type: Boolean, default: false },
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
+      }
+    ]
   },
   { timestamps: true }
 )
