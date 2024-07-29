@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import Paths from '../constants/Paths'
 import { useDispatch, useSelector } from 'react-redux'
-import { addOneMessage, setHasMore, setMessages } from '../features/authUser/messagesSlice'
+import {
+  addOneMessage,
+  setHasMore,
+  setMessages
+} from '../features/authUser/messagesSlice'
 
 const useSendMessage = () => {
   const [loading, setLoading] = useState(false)
@@ -35,14 +39,14 @@ const useSendMessage = () => {
         throw new Error(res.error)
       }
 
-      console.log('Socket res',res?.socketRes);
+      // console.log('Socket res',res?.socketRes);
 
       // console.log('Server response for send message', res.data)
       // add new message to existing messages.
       dispatch(addOneMessage(res.data))
       dispatch(setHasMore(true))
     } catch (e) {
-      console.log(e)
+      console.log(e.message)
     } finally {
       setLoading(false)
     }

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
+
 import { extractTime } from '../../utils/extractTime'
+import Avatar from '../sidebar/Avatar.jsx'
 
 const Message = ({ chat, scrollToBottom }) => {
   const authUser = useSelector(state => state.authUser?.value)
@@ -25,9 +27,15 @@ const Message = ({ chat, scrollToBottom }) => {
   }, [])
 
   return (
-    <div ref={bottomRef}>
+    <div className='mb-2' ref={bottomRef}>
       <div className={`chat chat-${fromMe ? 'end' : 'start'} text-sm`}>
-        <div className={`chat-bubble ${fromMe ? 'bg-sky-500' : ''}`}>
+        <div
+          className={`chat-bubble ${
+            fromMe
+              ? 'bg-black stroke-transparent'
+              : 'bg-black stroke-transparent'
+          }`}
+        >
           {chat?.message}
         </div>
       </div>

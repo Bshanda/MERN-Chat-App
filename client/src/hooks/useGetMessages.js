@@ -65,7 +65,7 @@ const useGetMessages = () => {
         }
 
         setLoading(false)
-        console.log('Fetched chats :-', typeof decodedMessages.data)
+        // console.log('Fetched chats :-', typeof decodedMessages.data)
         // save to message slice in redux.
 
         // const reversedData = decodedMessages.data.
@@ -74,7 +74,7 @@ const useGetMessages = () => {
         return
       })
       .catch(e => {
-        console.log(e)
+        console.log(e.message)
       })
       .finally(setLoading(false))
   }

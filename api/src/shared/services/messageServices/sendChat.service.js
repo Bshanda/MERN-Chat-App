@@ -21,6 +21,8 @@ export const saveToDb = async (recieverId, senderId, message) => {
       message
     })
 
+    log
+
     if (newMessage) {
       chat.messages.push(newMessage._id)
     }

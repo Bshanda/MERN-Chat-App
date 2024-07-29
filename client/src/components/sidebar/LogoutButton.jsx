@@ -14,18 +14,16 @@ const LogoutButton = () => {
     dispatch(removeToken())
     dispatch(clearMessages())
 
-    navigate('login')
+    navigate('/login', { replace: true })
     // console.log('logout called')
   }
 
   return (
     <div className='flex items-center' onClick={logout}>
       <div>
-        <BiLogOut size={'30px'}/>
+        <BiLogOut size={'30px'} />
       </div>
-      <div>
-        LogOut
-      </div>
+      <button>LogOut</button>
     </div>
   )
 }

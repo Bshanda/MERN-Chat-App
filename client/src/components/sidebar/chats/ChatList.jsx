@@ -26,7 +26,7 @@ const ChatList = () => {
   }, [])
 
   return (
-    <div className={`max-w-screen-sm rounded-lg bg-base-200 overflow-auto`}>
+    <div className={`max-w-screen-sm overflow-auto`}>
       {loading && <MessageSkeleton />}
 
       {!loading &&

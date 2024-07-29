@@ -6,12 +6,12 @@ import useUpdateSelfUser from '../../../hooks/useUpdateUser'
 const UpdateForm = () => {
   let user = useSelector(state => state.authUser.value)
   const [inputs, setInputs] = useState({
-    fullname: user.fullname,
+    fullname: user?.fullname || '',
     password: ''
   })
   const { loading, updateUser } = useUpdateSelfUser()
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     console.log('Updated user:-', inputs)
     const res = await updateUser(inputs)

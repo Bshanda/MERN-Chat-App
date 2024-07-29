@@ -17,7 +17,8 @@ export const getChatService = async (recieverId, senderId, limit, skip) => {
 
     // console.log('Chats', chats)
 
-    // returns empty array to the client if no chat is present
+    // returns empty array to the clilig
+    // ent if no chat is present
     if (chats?.length <= 0 || chats == null) {
       return { data: null }
     }

@@ -23,7 +23,7 @@ const LoginForm = () => {
     // redirect to chat page if user authenticated.
 
     if (authUser) {
-      navigate('/')
+      navigate('/chats')
     }
   }, [authUser])
 

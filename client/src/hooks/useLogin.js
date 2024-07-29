@@ -27,7 +27,7 @@ const useLogin = () => {
       })
 
       let resData = await res?.json() // res = {data, Token} || {error}
-      console.log('Login use :-',resData);
+      // console.log('Login use :-',resData);
       if (resData?.error) {
         toast.error(resData?.error)
         // throw new Error(resData.error)

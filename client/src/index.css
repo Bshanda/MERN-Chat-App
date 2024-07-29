@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
+#sideNavbar {
+  transition: width 2ms;
+}
 
 .online {
   background-color: green;
@@ -22,7 +23,7 @@
   max-width: 242px;
 }
 
-.searchBtn  {
+.searchBtn {
   display: flex;
   justify-content: center;
   width: 55px;

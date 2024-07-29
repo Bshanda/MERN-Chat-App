@@ -1,5 +1,5 @@
 // import { IoSearchSharp } from 'react-icons/io5'
-import { useEffect, useState } from 'react' 
+import { useEffect, useState } from 'react'
 import { useDebounce } from '../../../hooks/useDebounce'
 import { useChatContext } from '../../../context/ChatContext'
 // import useChatSearch from '../../hooks/useChatListSearch'
@@ -20,7 +20,7 @@ const SearchInput = () => {
         <input
           name='search'
           placeholder='Search'
-          className='search w-56 input input-bordered text-black rounded-full border focus:border-sky-500'
+          className='search w-56 input input-bordered text-black rounded-full border'
           value={search}
           onChange={e => {
             setSearch(e.target.value)
