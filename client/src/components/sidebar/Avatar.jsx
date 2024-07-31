@@ -1,9 +1,9 @@
 const Avatar = ({ avatar }) => {
-  return (
-    <div className='avatar w-6 h-6 rounded-full border border-black'>
-      <img src={`${avatar}`} alt='' />
-    </div>
-  )
+	return (
+		<div className='rounded-full '>
+			<img className='inline' src={`${avatar}`} alt='' height={30} width={30} />
+		</div>
+	)
 }
 
 export default Avatar

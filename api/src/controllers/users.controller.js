@@ -1,4 +1,5 @@
 import HttpStatusCodes from '../constants/HttpStatusCodes.js'
+import BlockedUsers from '../db/models/Friends/blockedUsers.model.js'
 import userServices from '../shared/services/userServices/users.service.js'
 
 // getting users including the loggedIn user.
@@ -54,6 +55,9 @@ const sendFriendReuest = async (req, res) => {
 	const { recieverId } = req.params
 
 	try {
+		const isUser = await userServices.checkUserPresence(recieverId)
+		if (isUser.error) throw new Error('User not found')
+
 		const r = await userServices.sendFriendRequest(senderId, recieverId)
 		if (r.error) throw new Error(r.error)
 		return res.status(HttpStatusCodes.OK).json({
@@ -71,6 +75,9 @@ const acceptFriendReuest = async (req, res) => {
 	const { senderId } = req.params
 
 	try {
+		const isUser = await userServices.checkUserPresence(recieverId)
+		if (isUser.error) throw new Error('User not found')
+
 		if (!recieverId || !senderId) throw new Error("Both reciever and sender Id's needed")
 		const r = await userServices.acceptFriendRequest(senderId, recieverId)
 
@@ -106,6 +113,28 @@ const rejectFriendReuest = async (req, res) => {
 	}
 }
 
+// block a user.
+const blockUser = async (req, res) => {
+	try {
+		const blockerId = req.user?._id
+		const userToBlockId = req.params?.id
+		if (!blockerId || !userToBlockId) throw new error("Need two id's")
+
+		let r = await userServices.checkUserPresence(userToBlockId)
+		if (r?.error) throw new Error('The user you are trying to block doesnot exists')
+
+		r = await userServices.blockUser(blockerId, userToBlockId)
+
+		if (!r) throw new Error('Error in blockUser service! please try later')
+
+		if (r.error) throw new Error(r.error)
+
+		return res.status(HttpStatusCodes.OK).json({ data: r, message: `${userToBlockId} blocked by ${blockerId}` })
+	} catch (error) {
+		return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message })
+	}
+}
+
 // Get all friends of a user.
 const getAllFriends = async (req, res) => {
 	try {
@@ -116,7 +145,7 @@ const getAllFriends = async (req, res) => {
 		if (!r) throw new Error('No response from getUserFriends service')
 		if (r?.error) throw new Error(r?.error)
 
-		return res.status(HttpStatusCodes.OK).json({ data: r }) // return array of objects with friends details.
+		return res.status(HttpStatusCodes.OK).json(r) // return array of objects with friends details.
 	} catch (error) {
 		return res.status(HttpStatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message })
 	}
@@ -128,7 +157,8 @@ const userController = {
 	sendFriendReuest,
 	acceptFriendReuest,
 	rejectFriendReuest,
-	getAllFriends
+	getAllFriends,
+	blockUser
 }
 
 export default userController

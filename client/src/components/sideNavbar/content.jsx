@@ -1,23 +1,33 @@
-import { MdGroups, MdOutlineGroups } from 'react-icons/md'
-import { IoChatboxOutline } from 'react-icons/io5'
+import { getFromLocalStorage } from '../../utils/localStorage'
+import LogoutButton from '../sidebar/LogoutButton'
 
 const navBarIconSize = '25px'
 
-export const sideNavBarContent = [
-  {
-    title: 'Chats',
-    link: '/chats',
-    icon: (
-      <IoChatboxOutline
-        size={navBarIconSize}
-        className='m-0 p-0'
-        alignmentBaseline='central'
-      />
-    )
-  },
-  {
-    title: 'Groups',
-    link: '/groups',
-    icon: <MdGroups size={navBarIconSize} />
-  }
-]
+const user = getFromLocalStorage('chat-user')
+
+export const sideNavBarContent = {
+	top: [
+		{
+			title: 'Chats',
+			link: '/chats',
+			icon: <i class='fa fa-comment fa-lg'></i>
+		},
+		{
+			title: 'Groups',
+			icon: <i className='fa fa-group'></i>
+		}
+	],
+	bottom: [
+		{
+			title: 'Settings',
+			icon: <i className='fa fa-gear'></i>,
+			onclick: () => document.getElementById('my_modal_3').showModal()
+		},
+		{
+			title: `Logout ${user?.username}`,
+			icon: <i className='fa fa-power-off fa-2x'></i>,
+			onclick: () => {},
+			component: <LogoutButton />
+		}
+	]
+}

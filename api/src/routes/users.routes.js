@@ -23,5 +23,7 @@ router.get(Paths.Users.RejectFriendRequest, userController.rejectFriendReuest)
 // get User's Friends.
 router.get(Paths.Users.GetFriends, userController.getAllFriends)
 
-//
+// block a user.
+router.get(Paths.Users.block, userController.blockUser)
+
 export default router

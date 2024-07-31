@@ -3,49 +3,49 @@
 @tailwind utilities;
 
 #sideNavbar {
-  transition: width 2ms;
+	transition: width 2ms;
 }
 
 .online {
-  background-color: green;
-  border-radius: 50%;
-  height: 12px;
-  display: block;
-  width: 12px;
-  position: absolute;
-  top: 7%;
-  right: 7%;
+	background-color: green;
+	border-radius: 50%;
+	height: 12px;
+	display: block;
+	width: 12px;
+	position: absolute;
+	top: -1%;
+	right: 4%;
 }
 
 .search {
-  padding: 7px 21px;
-  border: 6px solid skyblue;
-  max-width: 242px;
+	padding: 7px 21px;
+	border: 6px solid skyblue;
+	max-width: 242px;
 }
 
 .searchBtn {
-  display: flex;
-  justify-content: center;
-  width: 55px;
-  height: 45px;
-  align-items: center;
-  border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	width: 55px;
+	height: 45px;
+	align-items: center;
+	border-radius: 50%;
 }
 
 /* dark mode looking scrollbar */
 ::-webkit-scrollbar {
-  width: 2px;
+	width: 2px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #a41111;
+	background: #a41111;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #b71717;
-  border-radius: 5px;
+	background: #b71717;
+	border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #c11414;
+	background: #c11414;
 }

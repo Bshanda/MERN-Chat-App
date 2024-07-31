@@ -1,4 +1,5 @@
 import HttpStatusCodes from '../../../constants/HttpStatusCodes.js'
+import BlockedUser from '../../../db/models/Friends/blockedUsers.model.js'
 import FriendRequest from '../../../db/models/Friends/friendRequest.model.js'
 import FriendList from '../../../db/models/Friends/friends.model.js'
 import User from '../../../db/models/user.models.js'
@@ -199,13 +200,65 @@ const getUserFriends = async (userId) => {
 	}
 }
 
+const blockUser = async (blockerId, userToBlockId) => {
+	try {
+		let userBlockList = await BlockedUser.findOne({ userId: blockerId })
+		// if user dosenot have the blockedUsers document. Create one
+		if (!userBlockList) {
+			userBlockList = await BlockedUser.create({
+				userId: blockerId
+			})
+		}
+
+		if (userBlockList.blockedUsers.includes(userToBlockId)) throw new Error('User already blocked')
+
+		userBlockList.blockedUsers.push(userToBlockId)
+
+		const r = await userBlockList.save()
+
+		if (!r) throw new Error('unable to block user')
+		return r
+	} catch (error) {
+		return { error: error.message }
+	}
+}
+
+const checkUserPresence = async (userId) => {
+	try {
+		const r = await User.findById(userId).select('username')
+		if (!r) throw new Error('User not found')
+		return true
+	} catch (error) {
+		return { error: error.message }
+	}
+}
+
+const isBlocked = async (requestingUserId, targetUserId) => {
+	try {
+		const r = await BlockedUser.findById({ userId: requestingUserId })
+
+		if (!r) {
+			// If there's no entry for the requesting user, they haven't blocked anyone
+			return false
+		}
+
+		// Check if the targetUserId is in the blockedUsers array
+		return r.blockedUsers.includes(targetUserId)
+	} catch (error) {
+		return { error: error.message }
+	}
+}
+
 const userServices = {
 	getAllUsers,
 	updateUser,
 	sendFriendRequest,
 	acceptFriendRequest,
 	rejectFriendRequest,
-	getUserFriends
+	getUserFriends,
+	blockUser,
+	checkUserPresence,
+	isBlocked
 }
 
 export default userServices
